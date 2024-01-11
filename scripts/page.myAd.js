@@ -2,17 +2,22 @@
     app.PagemyAd = {
         draw: function () {
 
-            ADSBoard.Header.draw();
+            // ADSBoard.Header.draw();
+            let addButton = document.createElement("button");
+            addButton.classList.add("add_button");
+            addButton.append(document.createTextNode("Добавить"));
+            // Button.addEventListener("click");
+
+            let changeButton = document.createElement("button");
+            changeButton.classList.add("change_button");
+            changeButton.append(document.createTextNode("Изменить"));
+
+            let deleteButton = document.createElement("button");
+            deleteButton.classList.add("change_button");
+            deleteButton.append(document.createTextNode("Удалить"));
 
             let image = document.createElement('p');
             image.className = 'product__image';
-            let phone = document.createElement('p');
-            phone.className = 'product__phone';
-            let phoneButton = document.createElement("button");
-            phoneButton.classList.add("phone_button");
-            phoneButton.append(document.createTextNode("Показать телефон"));
-
-
 
 
             let title = document.createElement('p');
@@ -21,21 +26,16 @@
             let about = document.createElement('p');
             about.append(document.createTextNode("Немного потрепанный, цвет черный"));
             about.className = 'product__about';
-            let seller = document.createElement('p');
-            seller.append(document.createTextNode("Продавец: Сосорев О.А."));
-            seller.className = 'product__seller';
 
             let sum = document.createElement('p');
             sum.append(document.createTextNode("3000 p"));
             sum.className = 'product__sum';
 
             let leftBlock = document.querySelector(".left_block");
-            leftBlock.append(image, phone, phoneButton);
-
-            phoneButton.addEventListener("click", showPhone);
+            leftBlock.append(image);
 
             let centerBlock = document.querySelector(".center_block");
-            centerBlock.append(title, about, seller);
+            centerBlock.append(title, about, changeButton, deleteButton);
 
             let rightBlock = document.querySelector(".right_block");
             rightBlock.append(sum);
@@ -44,7 +44,7 @@
             productBlock.append(leftBlock, centerBlock, rightBlock);
 
             let productContent = document.querySelector(".product_content");
-            productContent.append(productBlock);
+            productContent.append(addButton, productBlock);
         }
     }
     // function showPhone() {

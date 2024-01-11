@@ -1,13 +1,10 @@
 body {
     margin: 0;
     padding: 0;
-    /*position: relative;*/
-    /*display: table;*/
 }
 
 header {
     display: flex;
-    justify-content: center;
     line-height: 28px;
     background: #0EA5E9;
     color: white;
@@ -25,13 +22,11 @@ button {
     border: none;
 }
 
-.right_block_header {
+.block_header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 300px;
-    background: #0EA5E9;
-    color: white;
+    width: 770px;
 }
 
 .form_name {
@@ -87,6 +82,7 @@ button {
 
 .center_block {
     margin: 0 10px;
+    height: 50px;
 }
 
 .product__seller {
@@ -97,18 +93,17 @@ button {
 .product__sum {
     font-size: 24px;
 }
+
 .topic {
     display: inline;
     justify-content: flex-end;
     color: #FFFFFF;
-    /*font-family: Inter, sans-serif;*/
     font-style: normal;
     font-weight: 400;
     text-decoration: none;
     text-align: left;
     height: 19px;
     font-size: 16px;
-    margin: 5px 0 0 0;
 }
 
 .menu__section {
@@ -122,8 +117,6 @@ button {
     padding-left: 15px;
 }
 
-
-
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
     .burger__btn {
         display: none;
@@ -131,10 +124,15 @@ button {
 }
 
 @media (min-width: 760px) {
-    .product_content {
-        align-items: center;
+    header {
         justify-content: center;
     }
+
+    .product_content {
+        display: flex;
+        align-items: center;
+    }
+
     .product__seller {
         position: relative;
         top: -35px;
@@ -168,12 +166,6 @@ button {
         justify-content: space-around;
     }
 
-    .position_header {
-        display: flex;
-        justify-content: space-between;
-        width: 750px;
-    }
-
     .product__title {
         font-size: 16px;
         font-family: Inter, serif;
@@ -181,24 +173,40 @@ button {
     }
 
     .product__about {
-        height: 125px;
+        height: 50px;
     }
 
     .product__sum {
         display: flex;
         justify-content: flex-end;
     }
+
+    .menu {
+        text-align: right;
+        padding: 0;
+        margin-right: 10px;
+    }
+
+    .add_button {
+        position: relative;
+        left: 305px;
+        margin: 20px;
+        width: 150px;
+    }
+
+    .change_button {
+        position: relative;
+        width: 150px;
+        top: 15px;
+        left: 265px;
+        margin: 0 10px;
+    }
 }
 
 @media (max-width: 350px) {
-
-    .position_header {
-        width: 340px;
-        margin-left: 10px;
-    }
-
     .burger__btn {
-        width: 630px;
+        width: 30px;
+        left: 300px;
         height: 60px;
         position: fixed;
         cursor: pointer;
@@ -235,6 +243,7 @@ button {
     .right_block, .product__seller {
         margin: 0 10px;
     }
+
     .menu {
         position: fixed;
         top: 70px;
@@ -261,7 +270,6 @@ button {
     /*    text-decoration-line: underline;*/
     /*    font-weight: 700;*/
     /*}*/
-
     /*.topic {*/
     /*    color: #FFFFFF;*/
     /*    font-size: 16px;*/
@@ -276,4 +284,23 @@ button {
         padding: 0;
     }
 
+    .add_button {
+        margin: 20px auto;
+        width: 150px;
+        display: block;
+    }
+
+    .change_button {
+        position: relative;
+        width: 150px;
+        top: 25px;
+        left: 70px;
+        margin: 9px;
+    }
+
+    .product__image {
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+    }
 }

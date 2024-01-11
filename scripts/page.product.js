@@ -1,8 +1,7 @@
 (function (app) {
     app.PageProduct = {
         draw: function () {
-
-            ADSBoard.Header.draw();
+            // ADSBoard.Header.draw();
 
             let image = document.createElement('p');
             image.className = 'product__image';
@@ -11,7 +10,6 @@
             let phoneButton = document.createElement("button");
             phoneButton.classList.add("phone_button");
             phoneButton.append(document.createTextNode("Показать телефон"));
-
 
             let title = document.createElement('p');
             title.append(document.createTextNode("Планшет Galaxy tab"));
@@ -45,8 +43,6 @@
             productContent.append(productBlock, seller);
         }
     }
-
-
 
     function showPhone() {
         document.querySelector(".phone_button").remove();

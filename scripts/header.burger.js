@@ -15,3 +15,4 @@ menuActive.addEventListener('click', function () {
 // function closeModal() {
 //     document.getElementById("result_window").style.display = "none"
 // }
+
