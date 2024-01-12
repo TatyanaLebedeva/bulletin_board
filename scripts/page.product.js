@@ -8,7 +8,7 @@
             let phone = document.createElement('p');
             phone.className = 'product__phone';
             let phoneButton = document.createElement("button");
-            phoneButton.classList.add("phone_button");
+            phoneButton.classList.add("base_button");
             phoneButton.append(document.createTextNode("Показать телефон"));
 
             let title = document.createElement('p');
@@ -31,7 +31,7 @@
             phoneButton.addEventListener("click", showPhone);
 
             let centerBlock = document.querySelector(".center_block");
-            centerBlock.append(title, about);
+            centerBlock.append(title, about, seller);
 
             let rightBlock = document.querySelector(".right_block");
             rightBlock.append(sum);
@@ -40,12 +40,12 @@
             productBlock.append(leftBlock, centerBlock, rightBlock);
 
             let productContent = document.querySelector(".product_content");
-            productContent.append(productBlock, seller);
+            productContent.append(productBlock);
         }
     }
 
     function showPhone() {
-        document.querySelector(".phone_button").remove();
+        document.querySelector(".base_button").remove();
         let leftBlock = document.querySelector(".left_block");
         leftBlock.append("+7 968 562 32 52");
     }
