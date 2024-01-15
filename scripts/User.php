@@ -1,6 +1,6 @@
 <?php
 require_once 'Databases.php';
-class Users
+class User
 {
     public function addUser(string $email, string|int $phone, string $username, string $password): void
     {
