@@ -8,8 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $result = $product->getProduct($adsId);
         if ($result) {
             echo json_encode($result);
+        } else {
+            echo "Объявление не найдено";
         }
-        echo "Объявление не найдено";
+
     } else if (isset($_GET['offset']) && isset($_GET['limit'])) {
         $offset = (int)$_GET['offset'];
         $limit = (int)$_GET['limit'];
@@ -60,10 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "PUT") {
-    if (isset($_POST['ads_id']) && ((isset($_POST['text']) || isset($_POST['name']) || isset($_POST['price']) || isset($_POST['image_id'])))) {
+    $put = json_decode(file_get_contents("php://input"), true);
+    if (isset($put['ads_id']) && ((isset($put['text']) || isset($put['name']) || isset($put['price']) || isset($put['image_id'])))) {
         $adsId = null;
-        if ($_POST['ads_id']) {
-            $adsId = (int)$_POST['ads_id'];
+        if ($put['ads_id']) {
+            $adsId = (int)$put['ads_id'];
         }
         if ($adsId) {
             $product = new Product();
@@ -72,35 +75,51 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
             echo "Невозможно найти товар";
             exit();
         }
-        if (isset($_PUT['user_id']) && $_PUT['user_id'] === $productByAdsId['user_id']) {
+        if (isset($put['user_id']) && (int)$put['user_id'] === (int)$productByAdsId['user_id']) {
             $text = null;
-            if (isset($_POST['text']) && $_POST['text']) {
-                $text = (string)$_POST['text'];
+            if (isset($put['text']) && $put['text']) {
+                $text = (string)$put['text'];
             }
             $name = null;
-            if (isset($_POST['name']) && $_POST['name']) {
-                $name = (string)$_POST['name'];
+            if (isset($put['name']) && $put['name']) {
+                $name = (string)$put['name'];
             }
             $price = null;
-            if (isset($_POST['price']) && $_POST['price']) {
-                $price = (int)$_POST['price'];
+            if (isset($put['price']) && $put['price']) {
+                $price = (int)$put['price'];
             }
             $imageId = null;
-            if (isset($_POST['image_id']) && $_POST['image_id']) {
-                $imageId = (int)$_POST['image_id'];
+            if (isset($put['image_id']) && $put['image_id']) {
+                $imageId = (int)$put['image_id'];
             }
             $product->updateAds($adsId, $text, $name, $price, $imageId);
             echo "Товар обновлён";
+        } else {
+            echo "Редактирование запрещено";
         }
     } else {
         echo "Редактирование запрещено";
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    if (isset($_DELETE['ads_id']) && $_DELETE['ads_id']) {
-        $adsId = (int)$_DELETE['ads_id'];
-        $product = new Product();
-        $product->deleteAds($adsId);
+    $delete = json_decode(file_get_contents("php://input"), true);
+    if (isset($delete['ads_id']) && $delete['ads_id'] && isset($delete['user_id']) && $delete['user_id']) {
+        $adsId = (int)$delete['ads_id'];
+        if ($adsId) {
+            $product = new Product();
+            $productByAdsId = $product->getProduct($adsId);
+        } else {
+            echo "Невозможно найти товар";
+            exit();
+        }
+        if ((int)$delete['user_id'] === (int)$productByAdsId['user_id']) {
+            $adsId = (int)$delete['ads_id'];
+            $product = new Product();
+            $product->deleteAds($adsId);
+            echo "Товар удалён";
+        } else {
+            echo "Товар не удалось удалить";
+        }
     } else {
         echo "Объявление не найдено";
     }

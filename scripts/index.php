@@ -1,10 +1,12 @@
 <?php
+require_once 'User.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['user_id']) && $_GET['user_id']) {
         $userId = (int)$_GET['user_id'];
         $user = new User();
         $result = $user->getUser($userId);
-        echo "Один пользователь";
+        print_r($result);
     } else {
         echo "Все пользователи";
     }
@@ -17,6 +19,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Не указан e-mail";
             exit();
+        }
+        if ($email) {
+            $user = new User();
+            $userByEmail = $user->getUserByEmail($email);
+            if($userByEmail){
+                echo "Пользователь с таким e-mail уже существует";
+                exit();
+            }
         }
         $phone = null;
         if ($_POST['phone']) {
@@ -46,6 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Не все поля заполнены";
         }
+    } else {
+        echo "Не все поля заполнены";
     }
 }
 

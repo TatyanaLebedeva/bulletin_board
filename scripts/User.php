@@ -17,4 +17,15 @@ class User
         }
         return null;
     }
+
+    public function getUserByEmail(string $email): array|null
+    {
+        $sql = "SELECT * FROM users WHERE email = '$email'";
+        $res = Databases::getAll($sql);
+        if ($res) {
+            return $res[0];
+        }
+        return null;
+    }
+
 }
