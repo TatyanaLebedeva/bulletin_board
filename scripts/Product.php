@@ -1,5 +1,6 @@
 <?php
 require_once 'Databases.php';
+
 class Product
 {
     public function addAds(int $userId, string $text, string $name, int $price, ?int $imageId = null): void
@@ -61,5 +62,15 @@ class Product
                 LIMIT $limit
                 OFFSET $offset";
         return Databases::getAll($sql);
+    }
+
+    public function getProduct(int $adsId): array|null
+    {
+        $sql = "SELECT * FROM ads WHERE ads_id = '$adsId'";
+        $res = Databases::getAll($sql);
+        if ($res) {
+            return $res[0];
+        }
+        return null;
     }
 }

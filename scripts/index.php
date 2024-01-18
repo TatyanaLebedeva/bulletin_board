@@ -1,67 +1,89 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
+    if (isset($_GET['user_id']) && $_GET['user_id']) {
+        $userId = (int)$_GET['user_id'];
+        $user = new User();
+        $result = $user->getUser($userId);
         echo "Один пользователь";
     } else {
         echo "Все пользователи";
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!isset($_POST['e-mail'])) {
-        echo "Не указан e-mail";
-        exit();
-    }
-    if (!isset($_POST['phone'])) {
-        echo "Не указан телефон";
-        exit();
-    }
-    if (!isset($_POST['username'])) {
-        echo "Не указано ФИО";
-        exit();
-    }
-    if (!isset($_POST['password'])) {
-        echo "Не указан пароль";
-        exit();
-    }
-
-    echo "Пользователь создан";
-}
-
-
-if ($_SERVER["REQUEST_METHOD"] == "PUT") {
-    if (isset($_PUT['user_id'])) {
-        $password = getUserPass((int)$_PUT['user_id']);
-    } else {
-        echo "Пользователь не найден";
-        exit();
-    }
-    if (isset($_PUT['password']) && $_PUT['password'] !== $password) {
-        echo "Пароль пользователя успешно обновлён";
-    } else {
-        echo "Пароль не должен совпадать";
-    }
-}
-if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    if (isset($_DELETE['user_id'])) {
-        $isDeleted = deleteUser((int)$_DELETE['user_id']);
-        if ($isDeleted) {
-            echo "Пользователь успешно удалён";
+    if (isset($_POST['email']) && isset($_POST['phone']) && isset($_POST['username']) && isset($_POST['password'])) {
+        $email = null;
+        if ($_POST['email']) {
+            $email = (string)$_POST['email'];
         } else {
-            echo "Пользователь не удалён";
+            echo "Не указан e-mail";
+            exit();
         }
-    } else {
-        echo "Невозможно найти пользователя";
+        $phone = null;
+        if ($_POST['phone']) {
+            $phone = (string)$_POST['phone'];
+        } else {
+            echo "Не указан телефон";
+            exit();
+        }
+        $username = null;
+        if ($_POST['username']) {
+            $username = (string)$_POST['username'];
+        } else {
+            echo "Не указано ФИО";
+            exit();
+        }
+        $password = null;
+        if ($_POST['password']) {
+            $password = (string)$_POST['password'];
+        } else {
+            echo "Не указан пароль";
+            exit();
+        }
+        if ($email && $phone && $username && $password) {
+            $user = new User();
+            $user->addUser($email, $phone, $username, $password);
+            echo "Пользователь создан";
+        } else {
+            echo "Не все поля заполнены";
+        }
     }
 }
 
-function getUserPass(int $userId): string
-{
-    //Получаем пароль пользователя из базы данных
-    return '';
-}
-
-function deleteUser(int $userId): bool
-{
-// Удалить пользователя из базы данных
-    return true;
-}
+//
+//if ($_SERVER["REQUEST_METHOD"] == "PUT") {
+//    if (isset($_PUT['user_id'])) {
+//        $password = getUserPass((int)$_PUT['user_id']);
+//    } else {
+//        echo "Пользователь не найден";
+//        exit();
+//    }
+//    if (isset($_PUT['password']) && $_PUT['password'] !== $password) {
+//        echo "Пароль пользователя успешно обновлён";
+//    } else {
+//        echo "Пароль не должен совпадать";
+//    }
+//}
+//if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+//    if (isset($_DELETE['user_id'])) {
+//        $isDeleted = deleteUser((int)$_DELETE['user_id']);
+//        if ($isDeleted) {
+//            echo "Пользователь успешно удалён";
+//        } else {
+//            echo "Пользователь не удалён";
+//        }
+//    } else {
+//        echo "Невозможно найти пользователя";
+//    }
+//}
+//
+//function getUserPass(int $userId): string
+//{
+//    //Получаем пароль пользователя из базы данных
+//    return '';
+//}
+//
+//function deleteUser(int $userId): bool
+//{
+//// Удалить пользователя из базы данных
+//    return true;
+//}

@@ -7,4 +7,14 @@ class User
         $sql = "INSERT INTO users (email, phone, username, password) VALUES ('$email', '$phone', '$username', '$password')";
         Databases::query($sql);
     }
+
+    public function getUser(int $userId): array|null
+    {
+        $sql = "SELECT * FROM users WHERE user_id = $userId";
+        $res = Databases::getAll($sql);
+        if ($res) {
+            return $res[0];
+        }
+        return null;
+    }
 }
