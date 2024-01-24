@@ -17,48 +17,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['email']) {
             $email = (string)$_POST['email'];
         } else {
-            echo "Не указан e-mail";
-            exit();
+            $message = "Не указан e-mail";
+            echo json_encode(['status' => false, 'message' => $message]);
         }
         if ($email) {
             $user = new User();
             $userByEmail = $user->getUserByEmail($email);
-            if($userByEmail){
-                echo "Пользователь с таким e-mail уже существует";
-                exit();
+            if ($userByEmail) {
+                $message = "Пользователь с таким e-mail уже существует";
+                echo json_encode(['status' => false, 'message' => $message]);
             }
         }
         $phone = null;
         if ($_POST['phone']) {
             $phone = (string)$_POST['phone'];
         } else {
-            echo "Не указан телефон";
-            exit();
+            $message = "Не указан телефон";
+            echo json_encode(['status' => false, 'message' => $message]);
         }
         $username = null;
-        if ($_POST['username']) {
+        if ($_POST['username'] && iconv_strlen($_POST['username']) > 3) {
             $username = (string)$_POST['username'];
         } else {
-            echo "Не указано ФИО";
-            exit();
+            $message = "Не указано ФИО";
+            echo json_encode(['status' => false, 'message' => $message]);
         }
         $password = null;
         if ($_POST['password']) {
             $password = (string)$_POST['password'];
         } else {
-            echo "Не указан пароль";
-            exit();
+            $message = "Не указан пароль";
+            echo json_encode(['status' => false, 'message' => $message]);
         }
         if ($email && $phone && $username && $password) {
             $user = new User();
             $user->addUser($email, $phone, $username, $password);
-            echo "Пользователь создан";
+            $message = "Пользователь создан";
+            echo json_encode(['status' => true, 'message' => $message]);
         } else {
-            echo "Не все поля заполнены";
+            $message = "Не все поля заполнены";
+            echo json_encode(['status' => false, 'message' => $message]);
         }
-    } else {
-        echo "Не все поля заполнены";
     }
+    $message = "Не все поля заполнены";
+    echo json_encode(['status' => false, 'message' => $message]);
 }
 
 //

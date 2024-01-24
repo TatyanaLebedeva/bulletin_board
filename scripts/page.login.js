@@ -7,27 +7,15 @@
             entrance.append(document.createTextNode("Вход"));
             entrance.classList.add("form_name");
 
-            let passwordField = document.createElement("input");
-            passwordField.classList.add("input");
+            let [emailField, formEmail] = createElement('email', "E-mail");
 
-            let formEmail = document.createElement("p");
-            formEmail.append(document.createTextNode("E-mail"));
-            formEmail.classList.add("form_text");
+            let [passwordField, formPassword] = createElement('password', "Пароль");
 
-            let entryButton = document.createElement("button");
-            entryButton.classList.add("auth_button");
-            entryButton.append(document.createTextNode("Войти"));
+            let entryButton = createButton("Войти");
 
-            let formPassword = document.createElement("p");
-            formPassword.append(document.createTextNode("Пароль"));
-            formPassword.classList.add("form_text");
+            let registerButton = createButton("Зарегистрироваться");
 
-            let emailField = document.createElement("input");
-            emailField.classList.add("input");
-
-            let registerButton = document.createElement("button");
-            registerButton.classList.add("auth_button");
-            registerButton.append(document.createTextNode("Зарегистрироваться"));
+            entryButton.addEventListener("click", goToLogin);
 
             registerButton.addEventListener("click", goToRegister);
 
@@ -39,11 +27,69 @@
         }
     }
 
+    function createElement(id, name) {
+        let newField = document.createElement("input");
+        newField.classList.add("input");
+        newField.id = id;
+        let newForm = document.createElement("p");
+        newForm.append(document.createTextNode(name));
+        newForm.classList.add("form_text");
+        return [newField, newForm];
+    }
+
+    function createButton(name) {
+        let newButton = document.createElement("button");
+        newButton.classList.add('auth_button');
+        newButton.append(document.createTextNode(name));
+        return newButton;
+    }
+
     function goToRegister() {
         document.querySelector(".container").innerHTML = "";
         document.querySelector(".auth_button").remove();
         document.querySelector(".auth_button").remove();
         document.querySelector(".form_name").remove();
         app.PageRegister.draw();
+    }
+
+    function goToLogin() {
+        let userEmail = document.querySelector('#email').value;
+        let userPassword = document.querySelector('#password').value;
+
+
+        let params = new FormData();
+        params.append('email', userEmail);
+        params.append('password', userPassword);
+
+        console.log(params);
+
+        fetch('scripts/auth.php', {
+            method: 'POST',
+            body: params
+        })
+            .then(
+                response => {
+                    if (!response.ok) {
+                        console.log(response.text());
+                        return response.text().then(text => {
+                            throw new Error(text)
+                        });
+                    }
+                    return response.json();
+                })
+            .then(
+                result => {
+                    alert(result.message);
+                    console.dir(result.message);
+                    if (result.status === true) {
+                        // BillBoard.Functions.goToLogin();
+                    }
+                }
+            )
+            .catch(
+                error => {
+                    console.error(error);
+                }
+            );
     }
 })(ADSBoard);
