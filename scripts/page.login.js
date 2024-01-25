@@ -56,12 +56,9 @@
         let userEmail = document.querySelector('#email').value;
         let userPassword = document.querySelector('#password').value;
 
-
         let params = new FormData();
         params.append('email', userEmail);
         params.append('password', userPassword);
-
-        console.log(params);
 
         fetch('scripts/auth.php', {
             method: 'POST',
@@ -79,10 +76,10 @@
                 })
             .then(
                 result => {
-                    alert(result.message);
-                    console.dir(result.message);
                     if (result.status === true) {
-                        // BillBoard.Functions.goToLogin();
+                        goToProduct(result.message);
+                    } else {
+                        alert(result.message);
                     }
                 }
             )
@@ -91,5 +88,9 @@
                     console.error(error);
                 }
             );
+    }
+
+    function goToProduct() {
+        document.location.replace('product.html');
     }
 })(ADSBoard);

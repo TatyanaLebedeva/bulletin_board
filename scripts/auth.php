@@ -11,7 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo json_encode(['status' => false, 'message' => "Не верно указан e-mail или пароль"]);
         }
+    } else{
+        $message = "Не все поля заполнены";
+        echo json_encode(['status' => false, 'message' => $message]);
     }
-    $message = "Не все поля заполнены";
-    echo json_encode(['status' => false, 'message' => $message]);
+
 }
