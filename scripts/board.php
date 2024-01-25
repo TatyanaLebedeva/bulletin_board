@@ -23,8 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $result = $product->getProductList($offset, $limit, $userId);
         if ($result) {
             echo json_encode($result);
+        } else {
+            echo "Объявления не найдены";
         }
-        echo "Объявления не найдены";
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
