@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $userId = (int)$_GET['user_id'];
         $user = new User();
         $result = $user->getUser($userId);
-        print_r($result);
+        echo json_encode($result);
     } else {
         echo "Все пользователи";
     }

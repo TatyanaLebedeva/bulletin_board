@@ -11,59 +11,33 @@
 
             if (response.ok) {
                 let json = await response.json();
-                json.forEach((element) => createProduct(element['name'],
-                    element['text'],
-                    element['price'],
-                    element['name'] ));
-                // console.dir(json);
+                json.forEach((element) => createProduct(element));
             } else {
                 alert("Ошибка HTTP: " + response.status);
             }
 
             // ADSBoard.Header.draw();
-            function createProduct(nameProduct, textProduct, stringPrice, fulName) {
-
-                let phone = aboutProduct();
-                phone.className = 'product__phone';
-
-                let image = aboutProduct();
-                image.className = 'product__image';
-
-                // let image = document.createElement('p');
-                // image.className = 'product__image';
-                // let phone = document.createElement('p');
-                // phone.className = 'product__phone';
-
-                let phoneButton = document.createElement("button");
-                phoneButton.classList.add("base_button");
-                phoneButton.append(document.createTextNode("Показать телефон"));
-
-                let title = document.createElement('p');
-                title.append(document.createTextNode(nameProduct));
-                title.className = 'product__title';
-                let about = document.createElement('p');
-                about.append(document.createTextNode(textProduct));
-                about.className = 'product__about';
-                let seller = document.createElement('p');
-                seller.append(document.createTextNode("Продавец: " + fulName));
-                seller.className = 'product__seller';
-
-                let sum = document.createElement('p');
-                sum.append(document.createTextNode(stringPrice));
-                sum.className = 'product__sum';
-
-                let leftBlock = document.querySelector(".left_block");
-                leftBlock.append(image, phone, phoneButton);
-
+            function createProduct(element) {
+                let image = addElementWithText('p', '', 'product__image');
+                let title = addElementWithText('p', element['name'], 'product__title');
+                let about = addElementWithText('p', element['text'], 'product__about');
+                let seller = addElementWithText('p', "Продавец: " + element['name'], 'product__seller');
+                let sum = addElementWithText('p', element['price'], 'product__sum');
+                let phoneButton = addElementWithText("button", "Показать телефон", "base_button");
                 phoneButton.addEventListener("click", showPhone);
 
-                let centerBlock = document.querySelector(".center_block");
+                let leftBlock = addElement("div", "left_block");
+                leftBlock.id = element['ads_id'];
+                leftBlock.append(image, phoneButton);
+
+                let centerBlock = addElement("div", "center_block");
                 centerBlock.append(title, about, seller);
 
-                let rightBlock = document.querySelector(".right_block");
+                let rightBlock = addElement("div", "right_block");
                 rightBlock.append(sum);
 
-                let productBlock = document.querySelector(".product_block");
+                let productBlock = addElement("div", "product_block");
+                productBlock.id = element['ads_id'];
                 productBlock.append(leftBlock, centerBlock, rightBlock);
 
                 let productContent = document.querySelector(".product_content");
@@ -72,16 +46,34 @@
         }
     }
 
-    function showPhone() {
-        document.querySelector(".base_button").remove();
-        let leftBlock = document.querySelector(".left_block");
-        leftBlock.append('stringPhone');
+    function addElementWithText(tag, text, className) {
+        let textElement = addElement(tag, className);
+        textElement.append(document.createTextNode(text));
+        return textElement;
     }
 
-    function aboutProduct(name) {
-        let newProduct = document.createElement("p");
-        newProduct.append(document.createTextNode(name));
-        return newProduct;
+    function addElement(tag, className) {
+        let element = document.createElement(tag);
+        element.className = className;
+        return element;
     }
+
+    async function showPhone() {
+
+        let url = '/scripts/index.php?user_id=8';
+
+        let response = await fetch(url);
+        let phoneNumber = '';
+        if (response.ok) {
+            let resultJson = await response.json();
+            phoneNumber = resultJson['phone'];
+        }
+        let phone = addElementWithText('p', phoneNumber, 'product__phone');
+        document.querySelector(".base_button").remove();
+
+        let leftBlock = document.querySelector(".left_block");
+        leftBlock.append(phone);
+    }
+
 
 })(ADSBoard);

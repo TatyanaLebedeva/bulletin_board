@@ -77,7 +77,7 @@
             .then(
                 result => {
                     if (result.status === true) {
-                        goToProduct(result.message);
+                        document.location.replace('product.html');
                     } else {
                         alert(result.message);
                     }
@@ -88,9 +88,5 @@
                     console.error(error);
                 }
             );
-    }
-
-    function goToProduct() {
-        document.location.replace('product.html');
     }
 })(ADSBoard);

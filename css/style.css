@@ -108,6 +108,14 @@ button {
     font-family: Inter, serif;
 }
 
+.product__phone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    margin: 0;
+}
+
 .product__sum {
     font-size: 24px;
 }
