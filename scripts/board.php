@@ -11,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         } else {
             echo "Объявление не найдено";
         }
-
     } else if (isset($_GET['offset']) && isset($_GET['limit'])) {
         $offset = (int)$_GET['offset'];
         $limit = (int)$_GET['limit'];

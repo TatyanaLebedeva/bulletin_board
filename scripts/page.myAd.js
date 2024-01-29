@@ -1,64 +1,76 @@
 (function (app) {
     app.PagemyAd = {
-        draw: function () {
-
-            // ADSBoard.Header.draw();
-            let addButton = document.createElement("button");
-            addButton.classList.add("add_button");
-            addButton.append(document.createTextNode("Добавить"));
-            // Button.addEventListener("click");
-
-            let changeButton = document.createElement("button");
-            changeButton.classList.add("base_button");
-            changeButton.append(document.createTextNode("Изменить"));
-
-            changeButton.addEventListener("click", changeAd);
-
-            let deleteButton = document.createElement("button");
-            deleteButton.classList.add("base_button");
-            deleteButton.append(document.createTextNode("Удалить"));
-
-
-            let productButtonBlock=document.createElement("div");
-            productButtonBlock.classList.add("change_block");
-            productButtonBlock.append(changeButton, deleteButton);
-
-            let image = document.createElement('p');
-            image.className = 'product__image';
-
-
-            let title = document.createElement('p');
-            title.append(document.createTextNode("Планшет Galaxy tab"));
-            title.className = 'product__title';
-            let about = document.createElement('p');
-            about.append(document.createTextNode("Немного потрепанный, цвет черный"));
-            about.className = 'product__about';
-
-            let sum = document.createElement('p');
-            sum.append(document.createTextNode("3000 p"));
-            sum.className = 'product__sum';
-
-            let leftBlock = document.querySelector(".left_block");
-            leftBlock.append(image);
-
-            let centerBlock = document.querySelector(".center_block");
-            centerBlock.append(title, about, productButtonBlock);
-
-            let rightBlock = document.querySelector(".right_block");
-            rightBlock.append(sum);
-
-            let productBlock = document.querySelector(".product_block");
-            productBlock.append(leftBlock, centerBlock, rightBlock);
+        draw: async function () {
+            // import{ addElementWithText,addElement } from './product.service.js';
+            // import{ addElement } from './product.service.js';
 
             let productContent = document.querySelector(".product_content");
-            productContent.append(addButton, productBlock);
+
+            let addButton = addElementWithText("button", "Добавить", "add_button");
+            addButton.addEventListener("click", changeAd);
+            productContent.append(addButton);
+
+            // let offset = document.querySelector('#offset').value;
+            let offset = 0;
+            let limit = 4;
+            let userId=4;
+            let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit + '&user_id=' + userId;
+
+            let response = await fetch(url);
+
+            if (response.ok) {
+                let json = await response.json();
+                json.forEach((element) => createProduct(element));
+            } else {
+                alert("Ошибка HTTP: " + response.status);
+            }
+
+            // ADSBoard.Header.draw();
+            function createProduct(element) {
+
+                let changeButton = addElementWithText("button", "Изменить", "base_button");
+                changeButton.addEventListener("click", changeAd);
+                let deleteButton = addElementWithText("button", "Удалить", "base_button");
+                deleteButton.addEventListener("click", changeAd);
+                let productButtonBlock = addElement("div", "change_block");
+                productButtonBlock.append(changeButton, deleteButton);
+
+                let image = addElementWithText('p', '', 'product__image');
+                let title = addElementWithText('p', element['name'], 'product__title');
+                let about = addElementWithText('p', element['text'], 'product__about');
+                let sum = addElementWithText('p', element['price'], 'product__sum');
+
+                let leftBlock = addElement("div", "left_block");
+                // leftBlock.id = element['ads_id'];
+                leftBlock.append(image, productButtonBlock);
+
+                let centerBlock = addElement("div", "center_block");
+                centerBlock.append(title, about, productButtonBlock);
+
+                let rightBlock = addElement("div", "right_block");
+                rightBlock.append(sum);
+
+                let productBlock = addElement("div", "product_block");
+                productBlock.id = element['ads_id'];
+                productBlock.append(leftBlock, centerBlock, rightBlock);
+
+                productContent.append(productBlock);
+            }
         }
     }
-    // function showPhone() {
-    //     document.querySelector(".base_button").remove();
-    //     let leftBlock=document.querySelector(".left_block");
-    //     leftBlock.append("+7 968 562 32 52");
-    // }
+
+    function addElementWithText(tag, text, className) {
+        let textElement = addElement(tag, className);
+        textElement.append(document.createTextNode(text));
+        return textElement;
+    }
+
+    function addElement(tag, className) {
+        let element = document.createElement(tag);
+        element.className = className;
+        return element;
+    }
+
     function changeAd() {
         document.querySelector(".product_content").innerHTML = "";
         // document.querySelector(".auth_button").remove();
@@ -66,4 +78,5 @@
         // document.querySelector(".form_name").remove();
         app.PageAdChange.draw();
     }
-})(ADSBoard);
+})
+(ADSBoard);
