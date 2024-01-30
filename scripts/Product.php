@@ -55,9 +55,12 @@ class Product
     {
         $sqlInsert = '';
         if ($userId) {
-            $sqlInsert = "WHERE user_id = '$userId'";
+            $sqlInsert = "WHERE ads.user_id = '$userId'";
         }
-        $sql = "SELECT * FROM ads $sqlInsert
+        $sql = "SELECT ads_id, text, name, price, image_id ,users.username, users.phone 
+                FROM ads 
+                JOIN users ON ads.user_id = users.user_id
+                $sqlInsert
                 ORDER BY ads_id DESC
                 LIMIT $limit
                 OFFSET $offset";

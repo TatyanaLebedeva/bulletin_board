@@ -116,6 +116,10 @@ button {
     margin: 0;
 }
 
+.hide {
+    display: none;
+}
+
 .product__sum {
     font-size: 24px;
 }
@@ -343,6 +347,7 @@ button {
         margin-left: 70px;
         margin-top: 10px;
     }
+
     .product__seller {
         position: relative;
         top: 45px;

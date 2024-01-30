@@ -21,14 +21,16 @@
                 let image = addElementWithText('p', '', 'product__image');
                 let title = addElementWithText('p', element['name'], 'product__title');
                 let about = addElementWithText('p', element['text'], 'product__about');
-                let seller = addElementWithText('p', "Продавец: " + element['name'], 'product__seller');
+                let seller = addElementWithText('p', "Продавец: " + element['username'], 'product__seller');
                 let sum = addElementWithText('p', element['price'], 'product__sum');
+                let phone = addElementWithText('p', element['phone'], 'product__phone hide');
+                phone.id = element['ads_id'];
                 let phoneButton = addElementWithText("button", "Показать телефон", "base_button");
                 phoneButton.addEventListener("click", showPhone);
 
                 let leftBlock = addElement("div", "left_block");
                 leftBlock.id = element['ads_id'];
-                leftBlock.append(image, phoneButton);
+                leftBlock.append(image, phone, phoneButton);
 
                 let centerBlock = addElement("div", "center_block");
                 centerBlock.append(title, about, seller);
@@ -59,20 +61,10 @@
     }
 
     async function showPhone() {
-
-        let url = '/scripts/index.php?user_id=8';
-
-        let response = await fetch(url);
-        let phoneNumber = '';
-        if (response.ok) {
-            let resultJson = await response.json();
-            phoneNumber = resultJson['phone'];
-        }
-        let phone = addElementWithText('p', phoneNumber, 'product__phone');
+        let leftBlock = document.querySelector(".base_button").parentNode;
         document.querySelector(".base_button").remove();
-
-        let leftBlock = document.querySelector(".left_block");
-        leftBlock.append(phone);
+        let phone = leftBlock.querySelector(".product__phone");
+        phone.classList.remove('hide');
     }
 
 
