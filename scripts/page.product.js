@@ -1,14 +1,12 @@
 (function (app) {
     app.PageProduct = {
         draw: async function () {
-
             // let offset = document.querySelector('#offset').value;
             let offset = 0;
             let limit = 4;
             let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit;
 
             let response = await fetch(url);
-
             if (response.ok) {
                 let json = await response.json();
                 json.forEach((element) => createProduct(element));
@@ -24,12 +22,10 @@
                 let seller = addElementWithText('p', "Продавец: " + element['username'], 'product__seller');
                 let sum = addElementWithText('p', element['price'], 'product__sum');
                 let phone = addElementWithText('p', element['phone'], 'product__phone hide');
-                phone.id = element['ads_id'];
                 let phoneButton = addElementWithText("button", "Показать телефон", "base_button");
                 phoneButton.addEventListener("click", showPhone);
 
                 let leftBlock = addElement("div", "left_block");
-                leftBlock.id = element['ads_id'];
                 leftBlock.append(image, phone, phoneButton);
 
                 let centerBlock = addElement("div", "center_block");
@@ -61,11 +57,9 @@
     }
 
     async function showPhone() {
-        let leftBlock = document.querySelector(".base_button").parentNode;
-        document.querySelector(".base_button").remove();
+        let leftBlock = this.parentNode;
+        leftBlock.querySelector(".base_button").remove();
         let phone = leftBlock.querySelector(".product__phone");
         phone.classList.remove('hide');
     }
-
-
 })(ADSBoard);

@@ -52,6 +52,10 @@
         let method = '';
         let params = '';
 
+        if (!name || !description || !price){
+            alert("Не все поля заполнены");
+            return;
+        }
         if (adsId) {
             params = JSON.stringify({
                 'text': description,

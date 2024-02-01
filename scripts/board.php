@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($userId && $text && $name && $price) {
             $product = new Product();
             $product->addAds($userId, $text, $name, $price, $imageId);
-            echo json_encode(['status' => true, 'message' => "Товар создан"]);
+            echo json_encode(['status' => true, 'message' => "Объявление создано"]);
         } else {
             echo json_encode(['status' => false, 'message' => "Не все поля заполнены"]);
         }
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
             $product = new Product();
             $productByAdsId = $product->getProduct($adsId);
         } else {
-            echo json_encode(['status' => false, 'message' => "Невозможно найти товар"]);
+            echo json_encode(['status' => false, 'message' => "Невозможно найти Объявление"]);
             exit();
         }
         if (isset($put['user_id']) && (int)$put['user_id'] === (int)$productByAdsId['user_id']) {
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
                 $imageId = (int)$put['image_id'];
             }
             $product->updateAds($adsId, $text, $name, $price, $imageId);
-            echo json_encode(['status' => true, 'message' => "Товар обновлён"]);
+            echo json_encode(['status' => true, 'message' => "Объявление обновлено"]);
         } else {
             echo json_encode(['status' => false, 'message' => "Редактирование запрещено"]);
         }
@@ -109,18 +109,18 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
             $product = new Product();
             $productByAdsId = $product->getProduct($adsId);
         } else {
-            echo json_encode(['status' => false, 'message' => "Невозможно найти товар"]);
+            echo json_encode(['status' => false, 'message' => "Невозможно удалить объявление"]);
             exit();
         }
         if ((int)$delete['user_id'] === (int)$productByAdsId['user_id']) {
             $adsId = (int)$delete['ads_id'];
             $product = new Product();
             $product->deleteAds($adsId);
-            echo json_encode(['status' => true, 'message' => "Товар удалён"]);
+            echo json_encode(['status' => true, 'message' => "Объявление удалено"]);
         } else {
-            echo json_encode(['status' => false, 'message' => "Товар не удалось удалить"]);
+            echo json_encode(['status' => false, 'message' => "Объявление не удалось удалить"]);
         }
     } else {
-        echo json_encode(['status' => false, 'message' => "Объявление не найдено"]);
+        echo json_encode(['status' => false, 'message' => "Невозможно удалить объявление"]);
     }
 }

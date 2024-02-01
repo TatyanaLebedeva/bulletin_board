@@ -13,7 +13,7 @@
             // let offset = document.querySelector('#offset').value;
             let offset = 0;
             let limit = 4;
-            let userId=4;
+            let userId = 4;
             let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit + '&user_id=' + userId;
 
             let response = await fetch(url);
@@ -31,7 +31,7 @@
                 let changeButton = addElementWithText("button", "Изменить", "base_button");
                 changeButton.addEventListener("click", changeAd);
                 let deleteButton = addElementWithText("button", "Удалить", "base_button");
-                deleteButton.addEventListener("click", changeAd);
+                deleteButton.addEventListener("click", deleteAd);
                 let productButtonBlock = addElement("div", "change_block");
                 productButtonBlock.append(changeButton, deleteButton);
 
@@ -73,10 +73,36 @@
 
     function changeAd() {
         document.querySelector(".product_content").innerHTML = "";
-        // document.querySelector(".auth_button").remove();
-        // document.querySelector(".auth_button").remove();
-        // document.querySelector(".form_name").remove();
         app.PageAdChange.draw();
     }
-})
-(ADSBoard);
+
+    function deleteAd() {
+        let adsId = this.parentNode.parentNode.parentNode.id;
+        let userId = 4;
+        let params = JSON.stringify({
+            'user_id': userId,
+            'ads_id': adsId
+        });
+        fetch('scripts/board.php', {
+            method: 'DELETE',
+            body: params
+        })
+            .then(
+                response => {
+                    if (!response.ok) {
+                        console.log(response.text());
+                        return response.text().then(text => {
+                            throw new Error(text)
+                        });
+                    }
+                    return response.json();
+                })
+            .then(
+                result => {
+                    alert(result.message);
+                    if (result.status === true) {
+                        window.location.reload();
+                    }
+                })
+    }
+})(ADSBoard);
