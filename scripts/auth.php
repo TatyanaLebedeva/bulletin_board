@@ -15,5 +15,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Не все поля заполнены";
         echo json_encode(['status' => false, 'message' => $message]);
     }
-
 }

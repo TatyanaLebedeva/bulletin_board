@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $result = $user->getUser($userId);
         echo json_encode($result);
     } else {
-        echo "Все пользователи";
+        echo json_encode(['status' => false, 'message' => 'Невозможно найти пользователя']);
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if ($result) {
             echo json_encode($result);
         } else {
-            echo "Объявление не найдено";
+            echo json_encode(['status' => false, 'message' => "Объявление не найдено"]);
         }
     } else if (isset($_GET['offset']) && isset($_GET['limit'])) {
         $offset = (int)$_GET['offset'];
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if ($result) {
             echo json_encode($result);
         } else {
-            echo "Объявления не найдены";
+            echo json_encode(['status' => false, 'message' => "Объявления не найдены"]);
         }
     }
 }
@@ -52,12 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($userId && $text && $name && $price) {
             $product = new Product();
             $product->addAds($userId, $text, $name, $price, $imageId);
-            echo "Товар создан";
+            echo json_encode(['status' => true, 'message' => "Товар создан"]);
         } else {
-            echo "Не все поля заполнены";
+            echo json_encode(['status' => false, 'message' => "Не все поля заполнены"]);
         }
     } else {
-        echo "Не все поля заполнены";
+        echo json_encode(['status' => false, 'message' => "Не все поля заполнены"]);
     }
 }
 
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
             $product = new Product();
             $productByAdsId = $product->getProduct($adsId);
         } else {
-            echo "Невозможно найти товар";
+            echo json_encode(['status' => false, 'message' => "Невозможно найти товар"]);
             exit();
         }
         if (isset($put['user_id']) && (int)$put['user_id'] === (int)$productByAdsId['user_id']) {
@@ -93,12 +93,12 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
                 $imageId = (int)$put['image_id'];
             }
             $product->updateAds($adsId, $text, $name, $price, $imageId);
-            echo "Товар обновлён";
+            echo json_encode(['status' => true, 'message' => "Товар обновлён"]);
         } else {
-            echo "Редактирование запрещено";
+            echo json_encode(['status' => false, 'message' => "Редактирование запрещено"]);
         }
     } else {
-        echo "Редактирование запрещено";
+        echo json_encode(['status' => false, 'message' => "Редактирование запрещено"]);
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
@@ -109,18 +109,18 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
             $product = new Product();
             $productByAdsId = $product->getProduct($adsId);
         } else {
-            echo "Невозможно найти товар";
+            echo json_encode(['status' => false, 'message' => "Невозможно найти товар"]);
             exit();
         }
         if ((int)$delete['user_id'] === (int)$productByAdsId['user_id']) {
             $adsId = (int)$delete['ads_id'];
             $product = new Product();
             $product->deleteAds($adsId);
-            echo "Товар удалён";
+            echo json_encode(['status' => true, 'message' => "Товар удалён"]);
         } else {
-            echo "Товар не удалось удалить";
+            echo json_encode(['status' => false, 'message' => "Товар не удалось удалить"]);
         }
     } else {
-        echo "Объявление не найдено";
+        echo json_encode(['status' => false, 'message' => "Объявление не найдено"]);
     }
 }
