@@ -1,5 +1,6 @@
 <?php
 require_once 'Databases.php';
+session_start();
 
 class Product
 {

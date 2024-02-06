@@ -67,7 +67,6 @@
             .then(
                 response => {
                     if (!response.ok) {
-                        console.log(response.text());
                         return response.text().then(text => {
                             throw new Error(text)
                         });

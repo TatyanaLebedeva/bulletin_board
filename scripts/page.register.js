@@ -9,23 +9,19 @@
             registration.classList.add("form_name");
 
             let [emailField, formEmail] = createElement('email', "E-mail");
-
             let [phoneField, formPhone] = createElement('phone', "Телефон");
-
             let [surnameField, formSurname] = createElement('username', "ФИО");
-
             let [passwordField, formPassword] = createElement('password', "Пароль");
-
             let [passConfirField, formPassConfir] = createElement('pass_confir', "Подтверждение пароля");
 
             let container = document.querySelector(".container");
             container.append(emailField, formEmail, phoneField, formPhone, surnameField, formSurname, passwordField, formPassword, passConfirField, formPassConfir);
 
             let registerButton = createButton("Зарегистрироваться");
-
             let entryButton = createButton("Войти");
-
             registerButton.addEventListener("click", endToRegister);
+            entryButton.addEventListener("click", goToAuth);
+
             let content = document.querySelector(".content");
             content.append(registration, container, registerButton, entryButton);
         }
@@ -48,6 +44,14 @@
         return newButton;
     }
 
+    function goToAuth() {
+        document.querySelector(".container").innerHTML = "";
+        document.querySelector(".auth_button").remove();
+        document.querySelector(".auth_button").remove();
+        document.querySelector(".form_name").remove();
+        app.PageLogin.draw();
+    }
+
     function endToRegister() {
         let userEmail = document.querySelector('#email').value;
         let userPhone = document.querySelector('#phone').value;
@@ -68,8 +72,6 @@
             alert('Пароли не совпадают');
             return;
         }
-        console.log(JSON.stringify(params));
-
         fetch('scripts/index.php', {
             method: 'POST',
             body: params
@@ -77,26 +79,11 @@
             .then(
                 response => {
                     if (!response.ok) {
-                        console.log(response.text());
                         return response.text().then(text => {
                             throw new Error(text)
                         });
                     }
-                    return response.json();
-                })
-            .then(
-                result => {
-                    alert(result.message);
-                    console.dir(result.message);
-                    if (result.status === true) {
-                        // BillBoard.Functions.goToLogin();
-                    }
-                }
-            )
-            // .catch(
-            //     error => {
-            //         console.error(error);
-            //     }
-            // );
+                    document.location.replace('product.html');
+               })
     }
 })(ADSBoard);

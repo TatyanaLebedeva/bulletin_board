@@ -1,5 +1,6 @@
 <?php
 require_once 'Databases.php';
+session_start();
 class User
 {
     public function addUser(string $email, string|int $phone, string $username, string $password): void
