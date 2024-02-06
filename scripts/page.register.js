@@ -83,7 +83,7 @@
                             throw new Error(text)
                         });
                     }
-                    document.location.replace('product.html');
+                    document.location.replace('index.html');
                })
     }
 })(ADSBoard);

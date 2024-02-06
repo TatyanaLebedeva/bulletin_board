@@ -1,5 +1,9 @@
 <?php
 require_once 'User.php';
+//if (!session_start()) {
+//    session_start();
+//}
+$user_id = $_SESSION['user'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -11,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo json_encode(['status' => false, 'message' => "Не верно указан e-mail или пароль"]);
         }
-    } else{
+    } else {
         echo json_encode(['status' => false, 'message' => "Не все поля заполнены"]);
     }
 }

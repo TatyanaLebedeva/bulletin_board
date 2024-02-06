@@ -1,7 +1,8 @@
 <?php
 require_once 'Databases.php';
-session_start();
-
+//if (!session_start()) {
+//    session_start();
+//}
 class Product
 {
     public function addAds(int $userId, string $text, string $name, int $price, ?int $imageId = null): void

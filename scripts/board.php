@@ -1,5 +1,9 @@
 <?php
 require_once 'Product.php';
+//if (!session_start()) {
+//    session_start();
+//}
+//$user_id=$_SESSION['user'];
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['ads_id']) && $_GET['ads_id']) {
