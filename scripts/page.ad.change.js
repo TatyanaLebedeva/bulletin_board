@@ -1,22 +1,10 @@
 (function (app) {
     app.PageAdChange = {
-        draw: async function () {
-            // let offset = document.querySelector('#offset').value;
-            let offset = 0;
-            let limit = 1;
-            let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit;
-
-            let response = await fetch(url);
-
-            if (response.ok) {
-                let json = await response.json();
-                json.forEach((element) => createProduct(element));
-            } else {
-                alert("Ошибка HTTP: " + response.status);
-            }
+        draw: async function (adsId) {
+            createProduct(adsId);
 
             // ADSBoard.Header.draw(true);
-            function createProduct(element) {
+            function createProduct(adsId) {
                 let [nameField, name] = createElementAndText('name', "Название", "input_ad");
                 let [priceField, formPrice] = createElementAndText('price', "Цена", "input_ad");
                 let [descriptionField, formDescription] = createElementAndText('description', "Описание", "input_description");
@@ -27,6 +15,7 @@
                 // uploadButton.addEventListener("click", changeAd);
 
                 let saveButton = addElementWithText("button", "Сохранить", "save_button");
+                saveButton.id = adsId;
                 saveButton.addEventListener("click", changeAd);
 
                 let productImage = addElement('div', "upload_photo");
@@ -41,18 +30,26 @@
         }
     }
 
+    // export function upload(selector){
+    //     const input=document.querySelector(selector);
+    //     const open=document.createElement('button');
+    //     open.classList.add('btn');
+    //     open.textContent('Открыть');
+    //
+    //     input.insertAdjacentElement('afterend', open)
+    //
+    // }
+
     function changeAd() {
-        // document.querySelector(".product_content").innerHTML = "";
         let name = document.getElementById("name").value;
         let description = document.getElementById("description").value;
         let image = document.getElementById("image").value;
         let price = document.getElementById("price").value;
-        let userId = 4;
-        let adsId = 6;
+        let adsId = this.id;
         let method = '';
         let params = '';
 
-        if (!name || !description || !price){
+        if (!name || !description || !price) {
             alert("Не все поля заполнены");
             return;
         }
@@ -61,7 +58,6 @@
                 'text': description,
                 'name': name,
                 'price': price,
-                'user_id': userId,
                 'image_id': image,
                 'ads_id': adsId
             });
@@ -71,7 +67,6 @@
             params.append('text', description);
             params.append('name', name);
             params.append('price', price);
-            params.append('user_id', userId);
             if (image) {
                 params.append('image_id', image);
             }
@@ -123,4 +118,28 @@
         element.className = className;
         return element;
     }
+
+    // Загрузка превьюшки изображения при добавлении нового товара
+    // loadPreviewAdd: function (event) {
+    //     let output = document.getElementById('imgPreview');
+    //     output.src = URL.createObjectURL(event.target.files[0]);
+    //     output.onload = function () {
+    //         URL.revokeObjectURL(output.src) // очистка
+    //     }
+    //     return output.onload;
+    // },
+    //
+    // // Загрузка изображения при редактировании нового товара
+    // loadPreviewEdit: function () {
+    //     let getID = this.id.split('_')[2];
+    //     let output = document.querySelector('#img_' + getID);
+    //     output.src = URL.createObjectURL(event.target.files[0]);
+    //     output.onload = function () {
+    //         URL.revokeObjectURL(output.src)
+    //     }
+    //     return output.onload;
+    // },
 })(ADSBoard);
+
+// export class upload {
+// }

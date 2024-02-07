@@ -1,6 +1,10 @@
+// import {upload} from "./page.ad.change";
+
 (function (app) {
     app.PagemyAd = {
         draw: async function () {
+            // import {upload} from "./page.ad.change.js";
+            // upload('#file');
             // import{ addElementWithText,addElement } from './product.service.js';
             // import{ addElement } from './product.service.js';
 
@@ -13,14 +17,18 @@
             // let offset = document.querySelector('#offset').value;
             let offset = 0;
             let limit = 4;
-            let userId = 4;
-            let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit + '&user_id=' + userId;
+            let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit;
 
             let response = await fetch(url);
 
             if (response.ok) {
                 let json = await response.json();
-                json.forEach((element) => createProduct(element));
+                if (!json.status) {
+                    let productContent = document.querySelector(".product_content");
+                    productContent.append(addElementWithText('p', json.message, 'product__title'));
+                } else {
+                    json.result.forEach((element) => createProduct(element));
+                }
             } else {
                 alert("Ошибка HTTP: " + response.status);
             }
@@ -41,7 +49,6 @@
                 let sum = addElementWithText('p', element['price'], 'product__sum');
 
                 let leftBlock = addElement("div", "left_block");
-                // leftBlock.id = element['ads_id'];
                 leftBlock.append(image, productButtonBlock);
 
                 let centerBlock = addElement("div", "center_block");
@@ -72,15 +79,14 @@
     }
 
     function changeAd() {
+        let adsId = this.parentNode.parentNode.parentNode.id;
         document.querySelector(".product_content").innerHTML = "";
-        app.PageAdChange.draw();
+        app.PageAdChange.draw(adsId);
     }
 
     function deleteAd() {
         let adsId = this.parentNode.parentNode.parentNode.id;
-        let userId = 4;
         let params = JSON.stringify({
-            'user_id': userId,
             'ads_id': adsId
         });
         fetch('scripts/board.php', {
@@ -90,7 +96,6 @@
             .then(
                 response => {
                     if (!response.ok) {
-                        console.log(response.text());
                         return response.text().then(text => {
                             throw new Error(text)
                         });

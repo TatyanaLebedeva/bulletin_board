@@ -1,9 +1,8 @@
 <?php
 require_once 'Product.php';
-//if (!session_start()) {
-//    session_start();
-//}
-//$user_id=$_SESSION['user'];
+if (!session_start()) {
+    session_start();
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['ads_id']) && $_GET['ads_id']) {
@@ -11,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $product = new Product();
         $result = $product->getProduct($adsId);
         if ($result) {
-            echo json_encode($result);
+            echo json_encode(['status' => true, 'result' => $result]);
         } else {
             echo json_encode(['status' => false, 'message' => "Объявление не найдено"]);
         }
@@ -19,23 +18,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $offset = (int)$_GET['offset'];
         $limit = (int)$_GET['limit'];
         $userId = null;
-        if (isset($_GET['user_id']) && $_GET['user_id']) {
-            $userId = (int)$_GET['user_id'];
+        if (!isset($_GET['all']) && isset($_SESSION['user_id']) && $_SESSION['user_id']) {
+            $userId = (int)$_SESSION['user_id'];
         }
         $product = new Product();
         $result = $product->getProductList($offset, $limit, $userId);
         if ($result) {
-            echo json_encode($result);
+            echo json_encode(['status' => true, 'result' => $result]);
         } else {
             echo json_encode(['status' => false, 'message' => "Объявления не найдены"]);
         }
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['text']) && isset($_POST['name']) && isset($_POST['price']) && isset($_POST['user_id'])) {
+    if (isset($_POST['text']) && isset($_POST['name']) && isset($_POST['price'])) {
         $userId = null;
-        if ($_POST['user_id']) {
-            $userId = (int)$_POST['user_id'];
+        if ($_SESSION['user_id']) {
+            $userId = (int)$_SESSION['user_id'];
         }
         $text = null;
         if ($_POST['text']) {
@@ -79,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
             echo json_encode(['status' => false, 'message' => "Невозможно найти Объявление"]);
             exit();
         }
-        if (isset($put['user_id']) && (int)$put['user_id'] === (int)$productByAdsId['user_id']) {
+        if (isset($_SESSION['user_id']) && (int)$_SESSION['user_id'] === (int)$productByAdsId['user_id']) {
             $text = null;
             if (isset($put['text']) && $put['text']) {
                 $text = (string)$put['text'];
@@ -107,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
 }
 if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     $delete = json_decode(file_get_contents("php://input"), true);
-    if (isset($delete['ads_id']) && $delete['ads_id'] && isset($delete['user_id']) && $delete['user_id']) {
+    if (isset($delete['ads_id']) && $delete['ads_id']) {
         $adsId = (int)$delete['ads_id'];
         if ($adsId) {
             $product = new Product();
@@ -116,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
             echo json_encode(['status' => false, 'message' => "Невозможно удалить объявление"]);
             exit();
         }
-        if ((int)$delete['user_id'] === (int)$productByAdsId['user_id']) {
+        if ((int)$_SESSION['user_id'] === (int)$productByAdsId['user_id']) {
             $adsId = (int)$delete['ads_id'];
             $product = new Product();
             $product->deleteAds($adsId);

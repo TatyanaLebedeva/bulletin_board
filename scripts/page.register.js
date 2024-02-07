@@ -1,7 +1,6 @@
 (function (app) {
     app.PageRegister = {
         draw: function () {
-
             ADSBoard.Header.draw(true);
 
             let registration = document.createElement("div");

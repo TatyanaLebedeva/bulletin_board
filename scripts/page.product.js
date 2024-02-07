@@ -4,12 +4,17 @@
             // let offset = document.querySelector('#offset').value;
             let offset = 0;
             let limit = 4;
-            let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit;
+            let url = '/scripts/board.php?offset=' + offset + '&limit=' + limit + '&all';
 
             let response = await fetch(url);
             if (response.ok) {
                 let json = await response.json();
-                json.forEach((element) => createProduct(element));
+                if (!json.status) {
+                    let productContent = document.querySelector(".product_content");
+                    productContent.append(addElementWithText('p', json.message, 'product__title'));
+                } else {
+                    json.result.forEach((element) => createProduct(element));
+                }
             } else {
                 alert("Ошибка HTTP: " + response.status);
             }

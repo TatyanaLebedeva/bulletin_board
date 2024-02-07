@@ -75,6 +75,7 @@
                 })
             .then(
                 result => {
+
                     if (result.status === true) {
                         document.location.replace('product.html');
                     } else {
@@ -82,10 +83,5 @@
                     }
                 }
             )
-            .catch(
-                error => {
-                    console.error(error);
-                }
-            );
     }
 })(ADSBoard);
