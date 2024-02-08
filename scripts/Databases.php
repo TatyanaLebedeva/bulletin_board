@@ -9,10 +9,11 @@ class Databases
         return mysqli_fetch_all($resultQuery, MYSQLI_ASSOC);
     }
 
-    public static function query(string $sql): void
+    public static function query(string $sql): int|string
     {
         $connection = self::connectToDB();
         $connection->query($sql);
+        return $connection->insert_id;
     }
 
     private static function connectToDB()

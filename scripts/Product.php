@@ -1,5 +1,6 @@
 <?php
 require_once 'Databases.php';
+
 class Product
 {
     public function addAds(int $userId, string $text, string $name, int $price, ?int $imageId = null): void
@@ -74,5 +75,15 @@ class Product
             return $res[0];
         }
         return null;
+    }
+
+    public function upsertImage(string $value, ?int $imageId = null): int|string
+    {
+        if ($imageId) {
+            $sql = "UPDATE images SET description = '$value' WHERE image_id = $imageId";
+        } else {
+            $sql = "INSERT INTO images (description) values ('$value')";
+        }
+        return Databases::query($sql);
     }
 }
