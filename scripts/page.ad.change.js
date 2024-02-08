@@ -8,7 +8,7 @@
                 let [nameField, name] = createElementAndText('name', "Название", "input_ad");
                 let [priceField, formPrice] = createElementAndText('price', "Цена", "input_ad");
                 let [descriptionField, formDescription] = createElementAndText('description', "Описание", "input_description");
-                let image = addElementWithText('input', '', 'product__image');
+                let image = document.createElement('input');
                 image.id = "image";
                 image.type = 'file';
 
@@ -19,24 +19,20 @@
                 image.insertAdjacentElement('afterend', preview);
                 image.insertAdjacentElement('afterend', uploadButton);
 
-
                 const triggerInput = () => image.click();
                 const changeImage = event => {
                     if (!event.target.files.length) {
                         return;
                     }
                     const files = Array.from(event.target.files);
+                    image.innerHTML='';
                     files.forEach(file => {
                             if (!file.type.match('image')) {
                                 return;
                             }
                             const reader = new FileReader();
                             reader.onload = ev => {
-                                const src=ev.target.result;
-                                preview.insertAdjacentHTML('afterbegin', `
-                                <div class = "preview_image">
-                                    <img src = "${src}" alt = "${file.name}"/>
-                                </div>`);
+                                image.insertAdjacentHTML("afterend", `<img class="product__image" src = "${ev.target.result}"/>`)
                             }
                             reader.readAsDataURL(file);
                         }
