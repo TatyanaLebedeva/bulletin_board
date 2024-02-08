@@ -1,10 +1,6 @@
-// import {upload} from "./page.ad.change";
-
 (function (app) {
     app.PagemyAd = {
         draw: async function () {
-            // import {upload} from "./page.ad.change.js";
-            // upload('#file');
             // import{ addElementWithText,addElement } from './product.service.js';
             // import{ addElement } from './product.service.js';
 

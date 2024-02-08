@@ -2,17 +2,16 @@
     app.PageAdChange = {
         draw: async function (adsId) {
             createProduct(adsId);
-
             // ADSBoard.Header.draw(true);
             function createProduct(adsId) {
                 let [nameField, name] = createElementAndText('name', "Название", "input_ad");
                 let [priceField, formPrice] = createElementAndText('price', "Цена", "input_ad");
                 let [descriptionField, formDescription] = createElementAndText('description', "Описание", "input_description");
-                let image = addElementWithText('p', '', 'product__image');
+                let image = addElementWithText('input', '', 'product__image');
                 image.id = "image";
 
                 let uploadButton = addElementWithText("button", "Загрузить фото", "upload_button");
-                // uploadButton.addEventListener("click", changeAd);
+                image.insertAdjacentElement('afterend', uploadButton)
 
                 let saveButton = addElementWithText("button", "Сохранить", "save_button");
                 saveButton.id = adsId;
@@ -29,16 +28,6 @@
             }
         }
     }
-
-    // export function upload(selector){
-    //     const input=document.querySelector(selector);
-    //     const open=document.createElement('button');
-    //     open.classList.add('btn');
-    //     open.textContent('Открыть');
-    //
-    //     input.insertAdjacentElement('afterend', open)
-    //
-    // }
 
     function changeAd() {
         let name = document.getElementById("name").value;
@@ -140,6 +129,3 @@
     //     return output.onload;
     // },
 })(ADSBoard);
-
-// export class upload {
-// }
