@@ -29,6 +29,26 @@ button {
     box-shadow: 2px 3px 10px rgba(0,0,0, .2);
 }
 
+/*.btn.primary{*/
+/*    background: darkolivegreen;*/
+/*    color: #FFFFFF;*/
+/*}*/
+input[type=file]{
+    display: none;
+}
+.preview{
+    display: flex;
+    padding: 5rem;
+}
+.preview_image{
+    margin-bottom: 5rem;
+    margin-right: 5rem;
+}
+.preview_image img{
+    width: 150px;
+    height: auto;
+}
+
 .block_header {
     display: flex;
     flex-direction: row;

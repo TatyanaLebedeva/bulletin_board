@@ -2,6 +2,7 @@
     app.PageAdChange = {
         draw: async function (adsId) {
             createProduct(adsId);
+
             // ADSBoard.Header.draw(true);
             function createProduct(adsId) {
                 let [nameField, name] = createElementAndText('name', "Название", "input_ad");
@@ -9,9 +10,40 @@
                 let [descriptionField, formDescription] = createElementAndText('description', "Описание", "input_description");
                 let image = addElementWithText('input', '', 'product__image');
                 image.id = "image";
+                image.type = 'file';
+
+                const preview = document.createElement("div");
+                preview.classList.add("preview");
 
                 let uploadButton = addElementWithText("button", "Загрузить фото", "upload_button");
-                image.insertAdjacentElement('afterend', uploadButton)
+                image.insertAdjacentElement('afterend', preview);
+                image.insertAdjacentElement('afterend', uploadButton);
+
+
+                const triggerInput = () => image.click();
+                const changeImage = event => {
+                    if (!event.target.files.length) {
+                        return;
+                    }
+                    const files = Array.from(event.target.files);
+                    files.forEach(file => {
+                            if (!file.type.match('image')) {
+                                return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = ev => {
+                                const src=ev.target.result;
+                                preview.insertAdjacentHTML('afterbegin', `
+                                <div class = "preview_image">
+                                    <img src = "${src}" alt = "${file.name}"/>
+                                </div>`);
+                            }
+                            reader.readAsDataURL(file);
+                        }
+                    )
+                }
+                uploadButton.addEventListener("click", triggerInput);
+                image.addEventListener("change", changeImage);
 
                 let saveButton = addElementWithText("button", "Сохранить", "save_button");
                 saveButton.id = adsId;
