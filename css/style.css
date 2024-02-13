@@ -124,6 +124,7 @@ input[type=file]{
     height: 150px;
     /*border: 1px solid black;*/
     margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 .center_block {

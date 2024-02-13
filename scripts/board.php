@@ -33,8 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['text']) && isset($_POST['name']) && isset($_POST['price'])) {
         $userId = null;
-        if ($_SESSION['user_id']) {
+        if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
             $userId = (int)$_SESSION['user_id'];
+        } else {
+            echo json_encode(['status' => false, 'message' => "Не удалось определить пользователя"]);
+            exit();
         }
         $text = null;
         if ($_POST['text']) {
@@ -49,11 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $price = (int)$_POST['price'];
         }
         $imageId = null;
-        if (isset($_POST['image_id']) && $_POST['image_id']) {
-            $imageId = (int)$_POST['image_id'];
+        $product = null;
+        if (isset($_POST['image']) && $_POST['image']) {
+            $product = new Product();
+            $imageId = (int)$product->upsertImage($_POST['image']);
         }
         if ($userId && $text && $name && $price) {
-            $product = new Product();
+            if (!$product) {
+                $product = new Product();
+            }
             $product->addAds($userId, $text, $name, $price, $imageId);
             echo json_encode(['status' => true, 'message' => "Объявление создано"]);
         } else {
@@ -92,8 +99,10 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
                 $price = (int)$put['price'];
             }
             $imageId = null;
-            if (isset($put['image_id']) && $put['image_id']) {
-                $imageId = (int)$put['image_id'];
+            $product = new Product();
+            if (isset($put['image_id']) && $put['image_id']
+                && isset($put['image']) && $put['image']) {
+                $imageId = (int)$product->upsertImage($put['image'], $put['image_id']);
             }
             $product->updateAds($adsId, $text, $name, $price, $imageId);
             echo json_encode(['status' => true, 'message' => "Объявление обновлено"]);

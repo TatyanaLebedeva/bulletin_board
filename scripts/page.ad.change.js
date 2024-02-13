@@ -9,7 +9,6 @@
                 let [priceField, formPrice] = createElementAndText('price', "Цена", "input_ad");
                 let [descriptionField, formDescription] = createElementAndText('description', "Описание", "input_description");
                 let image = document.createElement('input');
-                image.id = "image";
                 image.type = 'file';
 
                 const preview = document.createElement("div");
@@ -32,7 +31,8 @@
                             }
                             const reader = new FileReader();
                             reader.onload = ev => {
-                                image.insertAdjacentHTML("afterend", `<img class="product__image" src = "${ev.target.result}"/>`)
+                                image.insertAdjacentHTML("afterend",
+                                    `<img id="image" class="product__image" src = "${ev.target.result}"/>`)
                             }
                             reader.readAsDataURL(file);
                         }
@@ -60,7 +60,8 @@
     function changeAd() {
         let name = document.getElementById("name").value;
         let description = document.getElementById("description").value;
-        let image = document.getElementById("image").value;
+        let image = document.getElementById("image").src;
+        // let imageId = document.getElementById("image").value;
         let price = document.getElementById("price").value;
         let adsId = this.id;
         let method = '';
@@ -75,7 +76,8 @@
                 'text': description,
                 'name': name,
                 'price': price,
-                'image_id': image,
+                'image_id': imageId,
+                'image': image,
                 'ads_id': adsId
             });
             method = 'PUT';
@@ -85,7 +87,7 @@
             params.append('name', name);
             params.append('price', price);
             if (image) {
-                params.append('image_id', image);
+                params.append('image', image);
             }
             method = 'POST';
         }
@@ -97,7 +99,6 @@
             .then(
                 response => {
                     if (!response.ok) {
-                        console.log(response.text());
                         return response.text().then(text => {
                             throw new Error(text)
                         });
@@ -135,25 +136,4 @@
         element.className = className;
         return element;
     }
-
-    // Загрузка превьюшки изображения при добавлении нового товара
-    // loadPreviewAdd: function (event) {
-    //     let output = document.getElementById('imgPreview');
-    //     output.src = URL.createObjectURL(event.target.files[0]);
-    //     output.onload = function () {
-    //         URL.revokeObjectURL(output.src) // очистка
-    //     }
-    //     return output.onload;
-    // },
-    //
-    // // Загрузка изображения при редактировании нового товара
-    // loadPreviewEdit: function () {
-    //     let getID = this.id.split('_')[2];
-    //     let output = document.querySelector('#img_' + getID);
-    //     output.src = URL.createObjectURL(event.target.files[0]);
-    //     output.onload = function () {
-    //         URL.revokeObjectURL(output.src)
-    //     }
-    //     return output.onload;
-    // },
 })(ADSBoard);
