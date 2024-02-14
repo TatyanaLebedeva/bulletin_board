@@ -1,54 +1,67 @@
 (function (app) {
     app.PageAdChange = {
-        draw: async function (adsId) {
-            createProduct(adsId);
+        draw: async function (adsId, title, about, sum) {
+            createProduct(adsId, title, about, sum);
 
             // ADSBoard.Header.draw(true);
-            function createProduct(adsId) {
+            function createProduct(adsId, title, about, sum) {
                 let [nameField, name] = createElementAndText('name', "Название", "input_ad");
+                if (title) {
+                    nameField.value = title;
+                }
                 let [priceField, formPrice] = createElementAndText('price', "Цена", "input_ad");
+                if (sum) {
+                    priceField.value = sum;
+                }
                 let [descriptionField, formDescription] = createElementAndText('description', "Описание", "input_description");
-                let image = document.createElement('input');
-                image.type = 'file';
-                image.id = "file_image";
+                if (about) {
+                    descriptionField.value = about;
+                }
+                let inputImage = document.createElement('input');
+                inputImage.type = 'file';
+                inputImage.id = "file_image";
 
                 const preview = document.createElement("div");
                 preview.classList.add("preview");
 
                 let uploadButton = addElementWithText("button", "Загрузить фото", "upload_button");
-                image.insertAdjacentElement('afterend', preview);
-                image.insertAdjacentElement('afterend', uploadButton);
 
-                const triggerInput = () => image.click();
+                const triggerInput = () => inputImage.click();
                 const changeImage = event => {
                     if (!event.target.files.length) {
                         return;
                     }
                     const files = Array.from(event.target.files);
-                    image.innerHTML = '';
+                    // inputImage.innerHTML = '';
+                    let previewImage = productImage.querySelector('img');
                     files.forEach(file => {
                             if (!file.type.match('image')) {
                                 return;
                             }
                             const reader = new FileReader();
                             reader.onload = ev => {
-                                image.insertAdjacentHTML("afterend",
-                                    `<img id="image" class="product__image" src = "${ev.target.result}"/>`);
+                                previewImage.id = "image";
+                                previewImage.src = ev.target.result;
                             }
                             reader.readAsDataURL(file);
                         }
                     )
                 }
                 uploadButton.addEventListener("click", triggerInput);
-                image.addEventListener("change", changeImage);
+                inputImage.addEventListener("change", changeImage);
 
                 let saveButton = addElementWithText("button", "Сохранить", "save_button");
-                saveButton.id = adsId;
-                // saveButton.addEventListener("click", loadImage);
+                if (adsId) {
+                    saveButton.id = adsId;
+                }
                 saveButton.addEventListener("click", changeAd);
 
                 let productImage = addElement('div', "upload_photo");
-                productImage.append(image, uploadButton);
+                let defaultImage = addElement('img', 'product__image');
+                if (!productImage.querySelector('img')) {
+                    productImage.append(defaultImage);
+                }
+                productImage.append(inputImage, uploadButton);
 
                 let productAdBlock = addElement('div', "product_ad_block");
                 productAdBlock.append(name, nameField, formDescription, descriptionField, formPrice, priceField, productImage, saveButton)

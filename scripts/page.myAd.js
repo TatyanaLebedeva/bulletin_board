@@ -7,7 +7,7 @@
             let productContent = document.querySelector(".product_content");
 
             let addButton = addElementWithText("button", "Добавить", "add_button");
-            addButton.addEventListener("click", changeAd);
+            addButton.addEventListener("click", addAd);
             productContent.append(addButton);
 
             // let offset = document.querySelector('#offset').value;
@@ -39,7 +39,7 @@
                 let productButtonBlock = addElement("div", "change_block");
                 productButtonBlock.append(changeButton, deleteButton);
 
-                let image = addElementWithText('p', '', 'product__image');
+                let image = addElement('img', 'product__image');
                 let title = addElementWithText('p', element['name'], 'product__title');
                 let about = addElementWithText('p', element['text'], 'product__about');
                 let sum = addElementWithText('p', element['price'], 'product__sum');
@@ -75,9 +75,18 @@
     }
 
     function changeAd() {
-        let adsId = this.parentNode.parentNode.parentNode.id;
+        let productBlock = this.parentNode.parentNode.parentNode;
+        let adsId = productBlock.id;
+        let title = productBlock.querySelector(".product__title").innerText;
+        let about = productBlock.querySelector(".product__about").innerText;
+        let sum = productBlock.querySelector(".product__sum").innerText;
         document.querySelector(".product_content").innerHTML = "";
-        app.PageAdChange.draw(adsId);
+        app.PageAdChange.draw(adsId, title, about, sum);
+    }
+
+    function addAd() {
+        document.querySelector(".product_content").innerHTML = "";
+        app.PageAdChange.draw();
     }
 
     function deleteAd() {
