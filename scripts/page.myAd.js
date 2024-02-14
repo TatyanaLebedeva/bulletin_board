@@ -37,6 +37,9 @@
                 productButtonBlock.append(changeButton, deleteButton);
 
                 let image = addElement('img', 'product__image');
+                if (element["description"]) {
+                    image.src = "/.." + element["description"];
+                }
                 let title = addElementWithText('p', element['name'], 'product__title');
                 let about = addElementWithText('p', element['text'], 'product__about');
                 let sum = addElementWithText('p', element['price'], 'product__sum');

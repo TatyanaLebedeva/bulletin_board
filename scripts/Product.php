@@ -57,10 +57,10 @@ class Product
         if ($userId) {
             $sqlInsert = "WHERE ads.user_id = '$userId'";
         }
-        $sql = "SELECT ads_id, text, name, price, images.image_id, users.username, users.phone, images.description 
+        $sql = "SELECT ads_id, text, name, price, ads.image_id, users.username, users.phone, images.description 
                 FROM ads 
                 JOIN users ON ads.user_id = users.user_id
-                JOIN images ON ads.image_id= images.image_id
+                LEFT JOIN images ON ads.image_id= images.image_id
                 $sqlInsert
                 ORDER BY ads_id DESC
                 LIMIT $limit

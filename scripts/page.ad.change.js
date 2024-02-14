@@ -76,7 +76,7 @@
         let name = document.getElementById("name").value;
         let description = document.getElementById("description").value;
         let image = document.getElementById("file_image").files[0];
-        let imageId = document.getElementById("image").value;
+        // let imageId = document.getElementById("image").value;
         let price = document.getElementById("price").value;
         let adsId = this.id;
         let method = '';
