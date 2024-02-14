@@ -26,16 +26,17 @@ button {
     border-radius: 6px;
     background: #FFFFFF;
     padding: 1rem;
-    box-shadow: 2px 3px 10px rgba(0,0,0, .2);
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, .2);
 }
 
 /*.btn.primary{*/
 /*    background: darkolivegreen;*/
 /*    color: #FFFFFF;*/
 /*}*/
-input[type=file]{
+input[type=file] {
     display: none;
 }
+
 /*.preview{*/
 /*    display: flex;*/
 /*    padding: 5rem;*/
@@ -385,7 +386,7 @@ input[type=file]{
     .product__image {
         width: 150px;
         height: 150px;
-        margin-block: 1rem;
+        margin-block: 4rem;
     }
 
     .input_ad {

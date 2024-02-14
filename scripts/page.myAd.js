@@ -28,7 +28,6 @@
 
             // ADSBoard.Header.draw();
             function createProduct(element) {
-                console.log(element);
                 let changeButton = addElementWithText("button", "Изменить", "base_button");
                 changeButton.addEventListener("click", changeAd);
                 let deleteButton = addElementWithText("button", "Удалить", "base_button");
@@ -39,6 +38,7 @@
                 let image = addElement('img', 'product__image');
                 if (element["description"]) {
                     image.src = "/.." + element["description"];
+                    image.id = element["image_id"];
                 }
                 let title = addElementWithText('p', element['name'], 'product__title');
                 let about = addElementWithText('p', element['text'], 'product__about');
@@ -80,8 +80,11 @@
         let title = productBlock.querySelector(".product__title").innerText;
         let about = productBlock.querySelector(".product__about").innerText;
         let sum = productBlock.querySelector(".product__sum").innerText;
+        let image = productBlock.querySelector(".product__image");
+        let imageId = image.id;
+        let imageSrc = image.src;
         document.querySelector(".product_content").innerHTML = "";
-        app.PageAdChange.draw(adsId, title, about, sum);
+        app.PageAdChange.draw(adsId, title, about, sum, imageId, imageSrc);
     }
 
     function addAd() {

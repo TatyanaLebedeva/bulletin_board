@@ -1,10 +1,10 @@
 (function (app) {
     app.PageAdChange = {
-        draw: async function (adsId, title, about, sum) {
-            createProduct(adsId, title, about, sum);
+        draw: async function (adsId, title, about, sum, imageId, imageSrc) {
+            createProduct(adsId, title, about, sum, imageId, imageSrc);
 
             // ADSBoard.Header.draw(true);
-            function createProduct(adsId, title, about, sum) {
+            function createProduct(adsId, title, about, sum, imageId, imageSrc) {
                 let [nameField, name] = createElementAndText('name', "Название", "input_ad");
                 if (title) {
                     nameField.value = title;
@@ -58,6 +58,10 @@
 
                 let productImage = addElement('div', "upload_photo");
                 let defaultImage = addElement('img', 'product__image');
+                if (imageSrc) {
+                    defaultImage.src = imageSrc;
+                    defaultImage.id=imageId;
+                }
                 if (!productImage.querySelector('img')) {
                     productImage.append(defaultImage);
                 }
