@@ -1,9 +1,6 @@
 (function (app) {
     app.PagemyAd = {
         draw: async function () {
-            // import{ addElementWithText,addElement } from './product.service.js';
-            // import{ addElement } from './product.service.js';
-
             let productContent = document.querySelector(".product_content");
 
             let addButton = addElementWithText("button", "Добавить", "add_button");
@@ -31,7 +28,7 @@
 
             // ADSBoard.Header.draw();
             function createProduct(element) {
-
+                console.log(element);
                 let changeButton = addElementWithText("button", "Изменить", "base_button");
                 changeButton.addEventListener("click", changeAd);
                 let deleteButton = addElementWithText("button", "Удалить", "base_button");
