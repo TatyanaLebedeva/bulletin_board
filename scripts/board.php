@@ -53,10 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $imageId = null;
         $product = null;
-        if (isset($_POST['image']) && $_POST['image']) {
+        if (isset($_FILES['image']) && $_FILES['image']) {
+            $nameArr = explode('.', $_FILES['image']['name']);
+            $extension = end($nameArr);
+            $filename = "/img/products/" . md5($_FILES['image']['name'] . time()) . ".$extension";
+            move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . "/.." . $filename);
             $product = new Product();
-            $imageId = (int)$product->upsertImage($_POST['image']);
+            $imageId = (int)$product->upsertImage($filename);
         }
+
         if ($userId && $text && $name && $price) {
             if (!$product) {
                 $product = new Product();

@@ -10,6 +10,7 @@
                 let [descriptionField, formDescription] = createElementAndText('description', "Описание", "input_description");
                 let image = document.createElement('input');
                 image.type = 'file';
+                image.id = "file_image";
 
                 const preview = document.createElement("div");
                 preview.classList.add("preview");
@@ -24,7 +25,7 @@
                         return;
                     }
                     const files = Array.from(event.target.files);
-                    image.innerHTML='';
+                    image.innerHTML = '';
                     files.forEach(file => {
                             if (!file.type.match('image')) {
                                 return;
@@ -32,7 +33,7 @@
                             const reader = new FileReader();
                             reader.onload = ev => {
                                 image.insertAdjacentHTML("afterend",
-                                    `<img id="image" class="product__image" src = "${ev.target.result}"/>`)
+                                    `<img id="image" class="product__image" src = "${ev.target.result}"/>`);
                             }
                             reader.readAsDataURL(file);
                         }
@@ -43,6 +44,7 @@
 
                 let saveButton = addElementWithText("button", "Сохранить", "save_button");
                 saveButton.id = adsId;
+                // saveButton.addEventListener("click", loadImage);
                 saveButton.addEventListener("click", changeAd);
 
                 let productImage = addElement('div', "upload_photo");
@@ -60,7 +62,7 @@
     function changeAd() {
         let name = document.getElementById("name").value;
         let description = document.getElementById("description").value;
-        let image = document.getElementById("image").src;
+        let image = document.getElementById("file_image").files[0];
         // let imageId = document.getElementById("image").value;
         let price = document.getElementById("price").value;
         let adsId = this.id;
@@ -136,4 +138,20 @@
         element.className = className;
         return element;
     }
+
+    // function loadImage() {
+    //     let data = new FormData();
+    //     data.append("image", document.querySelector('#image').files[0])
+    //
+    //
+    //     let input = document.getElementById('input');
+    //     let image = document.getElementById('image');
+    //     image.src = URL.createObjectURL(input.files[0]);
+    //     localStorage.setItem('img', image.src);
+    //     document.getElementById("image").src = document.getElementById("input").value;
+    //     image.onload = function () {
+    //         URL.revokeObjectURL(image.src)
+    //     }
+    //     return output.onload;
+    // }
 })(ADSBoard);
