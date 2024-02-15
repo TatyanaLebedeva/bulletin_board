@@ -60,7 +60,7 @@
                 let defaultImage = addElement('img', 'product__image');
                 if (imageSrc) {
                     defaultImage.src = imageSrc;
-                    defaultImage.id=imageId;
+                    defaultImage.title = imageId;
                 }
                 if (!productImage.querySelector('img')) {
                     productImage.append(defaultImage);
@@ -80,7 +80,11 @@
         let name = document.getElementById("name").value;
         let description = document.getElementById("description").value;
         let image = document.getElementById("file_image").files[0];
-        // let imageId = document.getElementById("image").value;
+        let imageObj = document.getElementById("image");
+        let imageId = '';
+        if (imageObj) {
+            imageId = imageObj.title;
+        }
         let price = document.getElementById("price").value;
         let adsId = this.id;
         let method = '';
@@ -111,6 +115,7 @@
             method = 'POST';
         }
 
+        console.log(params);
         fetch('scripts/board.php', {
             method: method,
             body: params
