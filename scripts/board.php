@@ -118,6 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "PUT") {
         echo json_encode(['status' => false, 'message' => "Редактирование запрещено"]);
     }
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     $delete = json_decode(file_get_contents("php://input"), true);
     if (isset($delete['ads_id']) && $delete['ads_id']) {

@@ -87,37 +87,29 @@
         }
         let price = document.getElementById("price").value;
         let adsId = this.id;
-        let method = '';
-        let params = '';
 
         if (!name || !description || !price) {
             alert("Не все поля заполнены");
             return;
         }
+
+        let params = new FormData();
+        params.append('text', description);
+        params.append('name', name);
+        params.append('price', price);
+
         if (adsId) {
-            params = JSON.stringify({
-                'text': description,
-                'name': name,
-                'price': price,
-                'image_id': imageId,
-                'image': image,
-                'ads_id': adsId
-            });
-            method = 'PUT';
-        } else {
-            params = new FormData();
-            params.append('text', description);
-            params.append('name', name);
-            params.append('price', price);
-            if (image) {
-                params.append('image', image);
+            params.append('ads_id', adsId);
+        }
+        if (image) {
+            params.append('image', image);
+            if (imageId) {
+                params.append('image_id', imageId);
             }
-            method = 'POST';
         }
 
-        console.log(params);
         fetch('scripts/board.php', {
-            method: method,
+            method: 'POST',
             body: params
         })
             .then(
