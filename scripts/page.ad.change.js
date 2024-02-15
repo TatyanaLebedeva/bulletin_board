@@ -32,7 +32,6 @@
                         return;
                     }
                     const files = Array.from(event.target.files);
-                    // inputImage.innerHTML = '';
                     let previewImage = productImage.querySelector('img');
                     files.forEach(file => {
                             if (!file.type.match('image')) {
@@ -152,20 +151,4 @@
         element.className = className;
         return element;
     }
-
-    // function loadImage() {
-    //     let data = new FormData();
-    //     data.append("image", document.querySelector('#image').files[0])
-    //
-    //
-    //     let input = document.getElementById('input');
-    //     let image = document.getElementById('image');
-    //     image.src = URL.createObjectURL(input.files[0]);
-    //     localStorage.setItem('img', image.src);
-    //     document.getElementById("image").src = document.getElementById("input").value;
-    //     image.onload = function () {
-    //         URL.revokeObjectURL(image.src)
-    //     }
-    //     return output.onload;
-    // }
 })(ADSBoard);

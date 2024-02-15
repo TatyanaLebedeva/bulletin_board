@@ -30,15 +30,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
+        $userId = (int)$_SESSION['user_id'];
+    } else {
+        echo json_encode(['status' => false, 'message' => "Не удалось определить пользователя"]);
+        exit();
+    }
     if (isset($_POST['text']) && isset($_POST['name']) && isset($_POST['price'])) {
-        $userId = null;
-        if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
-            $userId = (int)$_SESSION['user_id'];
-        } else {
-            echo json_encode(['status' => false, 'message' => "Не удалось определить пользователя"]);
-            exit();
-        }
         $text = null;
         if ($_POST['text']) {
             $text = (string)$_POST['text'];
@@ -59,15 +59,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $filename = "/img/products/" . md5($_FILES['image']['name'] . time()) . ".$extension";
             move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . "/.." . $filename);
             $product = new Product();
-            $imageId = (int)$product->upsertImage($filename);
+            $existsImageId = null;
+            if (isset($_POST['image_id']) && $_POST['image_id']) {
+                $existsImageId = (int)$_POST['image_id'];
+            }
+            $imageId = $product->upsertImage($filename, $existsImageId);
+        }
+        $adsId = null;
+        if (isset($_POST['ads_id']) && $_POST['ads_id']) {
+            $adsId = (int)$_POST['ads_id'];
         }
 
         if ($userId && $text && $name && $price) {
             if (!$product) {
                 $product = new Product();
             }
-            $product->addAds($userId, $text, $name, $price, $imageId);
-            echo json_encode(['status' => true, 'message' => "Объявление создано"]);
+            if ($adsId) {
+                $product->updateAds($adsId, $text, $name, $price, $imageId);
+                echo json_encode(['status' => true, 'message' => "Объявление обновлено"]);
+            } else {
+                $product->addAds($userId, $text, $name, $price, $imageId);
+                echo json_encode(['status' => true, 'message' => "Объявление создано"]);
+            }
         } else {
             echo json_encode(['status' => false, 'message' => "Не все поля заполнены"]);
         }
